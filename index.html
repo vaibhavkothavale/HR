@@ -1,560 +1,215 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Job Portal with Show More Description</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <style>
-    :root {
-      --primary: #4f8aff;
-      --accent: #0b7285;
-      --bg-light: #f6f9fb;
-      --bg-dark: #191c1f;
-      --card-light: #fff;
-      --card-dark: #24272b;
-      --text-light: #15171a;
-      --text-dark: #f6f9fb;
-      --border-radius: 14px;
-      --shadow: 0 4px 16px rgba(30,40,60,0.08);
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Infosys-Inspired Job Portal</title>
+<style>
+  /* Basic Reset & Typography */
+  * {
+    box-sizing: border-box;
+  }
+  body {
+    margin:0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f4f6f8;
+    color: #333;
+  }
+  a {
+    text-decoration: none; color: inherit;
+  }
+
+  /* Navbar */
+  .navbar {
+    background-color: #00338d;
+    color: white;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    height: 56px;
+    justify-content: space-between;
+  }
+  .navbar .logo {
+    font-weight: 700;
+    font-size: 1.4rem;
+  }
+  .navbar ul {
+    list-style: none;
+    display: flex;
+    gap: 22px;
+    margin: 0; padding:0;
+  }
+  .navbar ul li {
+    display: flex; align-items: center;
+  }
+  .navbar ul li a {
+    color: white;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 6px 8px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+  .navbar ul li a:hover {
+    background-color: #001f60;
+  }
+  .navbar .nav-btn {
+    background-color: #e04e00;
+    padding: 7px 16px;
+    border-radius: 4px;
+  }
+  .navbar .nav-btn:hover {
+    background-color: #bb3d00;
+  }
+
+  /* Container */
+  .container {
+    max-width: 1000px;
+    margin: 30px auto 80px;
+    padding: 0 15px;
+  }
+
+  /* Job Card */
+  .job-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 6px 15px rgb(0 0 0 / 0.08);
+    padding: 22px 30px;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+  .job-left {
+    flex: 1;
+    min-width: 280px;
+  }
+  .job-title {
+    font-size: 1.28rem;
+    font-weight: 700;
+    margin: 0 0 5px 0;
+  }
+  .job-company {
+    font-size: 0.96rem;
+    font-weight: 600;
+    margin-bottom: 9px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .star {
+    color: #fabb17;
+    font-size: 1.15rem;
+  }
+  .job-reviews {
+    font-size: 0.9rem;
+    color: #5a5a5a;
+  }
+  .job-meta {
+    display: flex;
+    gap: 22px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+    font-size: 0.9rem;
+    color: #6e6e6e;
+  }
+  .job-meta span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .job-meta svg {
+    width: 18px;
+    height: 18px;
+    fill: #6e6e6e;
+  }
+  .job-skills {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #3f3f3f;
+  }
+
+  /* Apply Button */
+  .job-apply {
+    background-color: #001cff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 12px 26px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1rem;
+    flex-shrink: 0;
+    white-space: nowrap;
+    align-self: center;
+    transition: background-color 0.25s ease;
+  }
+  .job-apply:hover {
+    background-color: #0000cc;
+  }
+
+  /* Responsive */
+  @media (max-width: 650px) {
+    .job-card {
+      flex-direction: column;
+      gap: 15px;
+      padding: 16px 20px;
     }
-    [data-theme="dark"] {
-      --bg-light: #191c1f;
-      --bg-dark: #191c1f;
-      --card-light: #24272b;
-      --card-dark: #24272b;
-      --text-light: #f6f9fb;
-      --text-dark: #f6f9fb;
-      --primary: #2a7cff;
-      --accent: #5996fe;
-      --shadow: 0 2px 12px rgba(30,40,60,0.22);
-    }
-    body {
-      margin: 0;
-      padding: 0;
-      background: var(--bg-light);
-      color: var(--text-light);
-      font-family: "Segoe UI", Arial, sans-serif;
-      min-height: 100vh;
-      transition: background 0.4s, color 0.3s;
-    }
-    .container {
-      max-width: 520px;
-      margin: 36px auto 0 auto;
-      padding: 20px;
-    }
-    h1 {
-      font-size: 2.1em;
-      text-align: center;
-      margin-top: 10px;
-      margin-bottom: 32px;
-      color: var(--primary);
-      letter-spacing: 1.5px;
-      font-weight: 900;
-    }
-    .top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 24px;
-      padding: 14px 18px;
-      background: var(--card-light);
-      border-radius: var(--border-radius);
-      box-shadow: var(--shadow);
-    }
-    .btn,
-    .mode-toggle,
-    .panel-toggle {
-      border: none;
-      background: var(--primary);
-      color: #fff;
-      padding: 10px 20px;
-      font-size: 1em;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: 600;
-      box-shadow: 0 1px 6px rgba(30, 40, 60, 0.05);
-      transition: background 0.2s, transform 0.12s;
-      margin-right: 3px;
-      margin-bottom: 6px;
-      outline: none;
-      display: inline-block;
-      min-width: 110px;
-    }
-    .btn:active,
-    .mode-toggle:active,
-    .panel-toggle:active {
-      transform: scale(0.97);
-      background: var(--accent);
-    }
-    .btn.apply {
-      background: var(--accent);
-      color: #fff;
-      min-width: 110px;
-    }
-    .btn.small {
-      padding: 8px 15px;
-      min-width: 80px;
-      font-size: 0.98em;
-    }
-    .btn.delete {
-      background: #d62447;
-    }
-    .btn.edit {
-      background: #faa105;
-      color: #fff;
-    }
-    .mode-toggle {
-      background: var(--primary);
-    }
-    .panel-toggle {
-      background: var(--accent);
-    }
-    .card {
-      background: var(--card-light);
-      box-shadow: var(--shadow);
-      border-radius: var(--border-radius);
-      padding: 18px 20px;
-      margin-bottom: 18px;
-      transition: background 0.4s;
-      min-width: 0;
-      word-break: break-word;
-    }
-    .job-title {
-      font-weight: 700;
-      font-size: 1.16em;
-      color: var(--primary);
-    }
-    .admin {
-      display: none;
-    }
-    .jobs {
-      display: none;
-    }
-    .admin h2,
-    .jobs h2 {
-      margin-top: 0;
-      color: var(--accent);
-      font-size: 1.22em;
-      margin-bottom: 18px;
-      font-weight: 700;
-      letter-spacing: 1.2px;
-    }
-    label {
-      display: block;
-      margin-bottom: 3px;
-      font-weight: 600;
-      color: var(--primary);
-    }
-    input[type="search"],
-    .input,
-    textarea {
+    .job-apply {
       width: 100%;
-      padding: 10px;
-      margin-bottom: 13px;
-      border-radius: 6px;
-      border: 1px solid #d7e4f7;
-      font-size: 1em;
-      background: var(--bg-light);
-      transition: background 0.4s;
-      color: var(--text-light);
-      box-sizing: border-box;
-    }
-    textarea {
-      resize: vertical;
-      min-height: 45px;
-    }
-    input[type="file"] {
-      border: none;
-      margin-bottom: 14px;
-      margin-top: 5px;
-      padding: 0px;
-      color: var(--primary);
-      background: none;
-    }
-    .action-btns {
-      float: right;
-      display: flex;
-      gap: 5px;
-      flex-wrap: wrap;
-    }
-    .success-msg {
-      background: #e6ffe6;
-      color: #096f2b;
-      padding: 12px 16px;
-      border-radius: 8px;
       text-align: center;
-      font-weight: bold;
-      margin-top: 8px;
-      margin-bottom: 4px;
     }
-    .no-jobs {
-      font-style: italic;
-      color: #9ea5ac;
-      font-size: 1.01em;
-    }
-    .desc {
-      overflow: hidden;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      position: relative;
-      line-height: 1.3em;
-      max-height: 2.6em; /* 2 lines */
-      margin-bottom: 5px;
-      transition: max-height 0.3s ease;
-    }
-    .desc.expanded {
-      -webkit-line-clamp: unset;
-      max-height: none;
-    }
-    .see-more-btn {
-      color: var(--primary);
-      cursor: pointer;
-      font-size: 0.95em;
-      font-weight: 600;
-      background: none;
-      border: none;
-      padding: 0;
-      user-select: none;
-      margin-bottom: 10px;
-    }
-    /* Popup Modal */
-    .modal-bg {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(30, 40, 55, 0.42);
-      z-index: 999;
-      align-items: center;
-      justify-content: center;
-      animation: fadeIn 0.34s;
-    }
-    .modal {
-      background: var(--card-light);
-      color: var(--text-light);
-      border-radius: var(--border-radius);
-      box-shadow: 0 8px 32px rgba(29, 44, 76, 0.14);
-      max-width: 370px;
-      width: 97vw;
-      padding: 22px 26px;
-      box-sizing: border-box;
-      position: relative;
-      animation: popup 0.23s;
-    }
-    .modal h2 {
-      font-size: 1.16em;
-      margin-top: 0;
-      margin-bottom: 10px;
-      color: var(--primary);
-    }
-    .close-modal {
-      position: absolute;
-      top: 16px;
-      right: 18px;
-      background: none;
-      border: none;
-      font-size: 1.28em;
-      color: #888;
-      cursor: pointer;
-      transition: color 0.15s;
-    }
-    .close-modal:hover {
-      color: var(--accent);
-    }
-    @keyframes fadeIn {
-      from {
-        opacity: 0;
-      }
-      to {
-        opacity: 1;
-      }
-    }
-    @keyframes popup {
-      from {
-        transform: scale(0.7);
-      }
-      to {
-        transform: scale(1);
-      }
-    }
-    @media (max-width: 650px) {
-      .container {
-        padding: 8px;
-      }
-      h1 {
-        font-size: 1.38em;
-      }
-      .top-bar {
-        flex-direction: column;
-        gap: 8px;
-      }
-      .card {
-        padding: 12px 6px;
-      }
-      .btn,
-      .mode-toggle,
-      .panel-toggle {
-        font-size: 0.96em;
-        min-width: 70px;
-      }
-    }
-  </style>
+  }
+</style>
 </head>
 <body>
-  <div class="container">
-    <h1>Job Posting Portal</h1>
-    <div class="top-bar">
-      <button class="panel-toggle" onclick="togglePanel()">🏢 Admin Panel</button>
-      <button class="mode-toggle" onclick="toggleMode()">🌙 Mode</button>
+
+<!-- Navigation Bar -->
+<nav class="navbar">
+  <div class="logo">Infosys Careers</div>
+  <ul>
+    <li><a href="#">Jobs</a></li>
+    <li><a href="#">Companies</a></li>
+    <li><a href="#">Services</a></li>
+    <li><a href="#">Contact Us</a></li>
+  </ul>
+  <a href="#" class="nav-btn">Submit a Job</a>
+</nav>
+
+<!-- Main Container -->
+<div class="container">
+
+  <!-- Job Card Example -->
+  <div class="job-card">
+    <div class="job-left">
+      <h2 class="job-title">HTML Designer</h2>
+      <div class="job-company">
+        Dezven Software Solution 
+        <span class="star">★</span> 
+        <span class="job-reviews">| 234 Reviews</span>
+      </div>
+      <div class="job-meta">
+        <span title="Experience">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v3l-7 9-3-4-6 7v-15z"></path></svg>
+          1 to 4 Years
+        </span>
+        <span title="Salary">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C9 2 6 5 6 8c0 3-2 10-2 10h16s-2-7-2-10c0-3-3-6-6-6zm1 16h-2v-2h2v2zm0-4h-2v-6h2v6z"/></svg>
+          ₹ No disclosed
+        </span>
+        <span title="Location">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5z"/></svg>
+          Pune
+        </span>
+      </div>
+      <p class="job-skills"><strong>Skills :</strong> HTML, CSS, JAVASCRIPT, JQUERY, BOOTSTRAP, PHOTOSHOP</p>
     </div>
-    <div class="jobs">
-      <h2>Current Job Openings</h2>
-      <input
-        type="search"
-        id="userSearch"
-        oninput="renderJobs()"
-        placeholder="Search jobs by title or company..."
-        autocomplete="off"
-      />
-      <div id="jobList"></div>
-    </div>
-    <div class="admin">
-      <h2>Add or Manage Jobs</h2>
-      <form id="jobForm" onsubmit="addOrUpdateJob(event)">
-        <input type="hidden" id="editId" />
-        <label for="title">Title</label>
-        <input class="input" type="text" id="title" required />
-        <label for="company">Company</label>
-        <input class="input" type="text" id="company" required />
-        <label for="desc">Description</label>
-        <textarea id="desc" required></textarea>
-        <button class="btn" type="submit">Add/Update Job</button>
-      </form>
-      <input
-        type="search"
-        id="adminSearch"
-        oninput="renderAdminJobs()"
-        placeholder="Search jobs by title or company..."
-        autocomplete="off"
-        style="margin-top: 16px;"
-      />
-      <h2 style="font-size: 1.1em; margin-top: 30px;">Your Job Listings</h2>
-      <div id="adminJobList"></div>
-    </div>
+    <button class="job-apply">Apply Now</button>
   </div>
-  <!-- Modal Popup for Apply Form -->
-  <div class="modal-bg" id="modalBg" onclick="closeModal(event)">
-    <div class="modal" id="modal" onclick="event.stopPropagation()">
-      <button class="close-modal" onclick="hideModal()">×</button>
-      <div id="modalContent"></div>
-    </div>
-  </div>
-  <script>
-    let jobs = [];
-    let darkmode = false;
-    let applications = [];
 
-    document.querySelector(".jobs").style.display = "block";
-    document.querySelector(".admin").style.display = "none";
+  <!-- Additional job cards would go here -->
 
-    function togglePanel() {
-      const isJobs = document.querySelector(".jobs").style.display === "block";
-      document.querySelector(".jobs").style.display = isJobs ? "none" : "block";
-      document.querySelector(".admin").style.display = isJobs ? "block" : "none";
-      document.querySelector(".panel-toggle").innerText = isJobs
-        ? "👥 Website"
-        : "🏢 Admin Panel";
-      if (!isJobs) renderJobs();
-      else renderAdminJobs();
-    }
-    function toggleMode() {
-      darkmode = !darkmode;
-      document.body.setAttribute("data-theme", darkmode ? "dark" : "light");
-      document.querySelector(".mode-toggle").innerHTML = darkmode ? "☀️ Mode" : "🌙 Mode";
-    }
+</div>
 
-    function renderJobs() {
-      let html = "";
-      let searchTerm = document.getElementById("userSearch").value.toLowerCase().trim();
-      let filtered = jobs.filter(
-        (job) =>
-          job.title.toLowerCase().includes(searchTerm) ||
-          job.company.toLowerCase().includes(searchTerm)
-      );
-      if (filtered.length === 0) html = '<div class="no-jobs">No jobs found.</div>';
-      filtered.forEach((job, idx) => {
-        const descId = `desc_${jobs.indexOf(job)}_user`;
-        html += `<div class="card">
-            <div class="job-title">${job.title}</div>
-            <div style="color:var(--accent);font-weight:600;">${job.company}</div>
-            <div class="desc" id="${descId}">${escapeHtml(job.desc)}</div>
-            ${job.desc.length > 120 ? `<button class="see-more-btn" onclick="toggleDesc('${descId}', this)">See more</button>` : ''}
-            <button class="btn apply" onclick="showApplyForm(${jobs.indexOf(job)})">Apply to Job</button>
-        </div>`;
-      });
-      document.getElementById("jobList").innerHTML = html;
-    }
-    function renderAdminJobs() {
-      let html = "";
-      let searchTerm = document.getElementById("adminSearch").value.toLowerCase().trim();
-      let filtered = jobs.filter(
-        (job) =>
-          job.title.toLowerCase().includes(searchTerm) ||
-          job.company.toLowerCase().includes(searchTerm)
-      );
-      if (filtered.length === 0) html = '<div class="no-jobs">No jobs found.</div>';
-      filtered.forEach((job, idx) => {
-        const descId = `desc_${jobs.indexOf(job)}_admin`;
-        html += `<div class="card">
-            <div><span class="job-title">${job.title}</span>
-            <span style="color:var(--accent);font-weight:600;"> (${job.company})</span></div>
-            <div class="desc" id="${descId}">${escapeHtml(job.desc)}</div>
-            ${job.desc.length > 120 ? `<button class="see-more-btn" onclick="toggleDesc('${descId}', this)">See more</button>` : ''}
-            <div class="action-btns">
-              <button class="btn small edit" onclick="editJob(${jobs.indexOf(job)})">Edit</button>
-              <button class="btn small delete" onclick="deleteJob(${jobs.indexOf(job)})">Delete</button>
-            </div>
-        </div>`;
-      });
-      document.getElementById("adminJobList").innerHTML = html;
-    }
-    // Escape HTML special characters in description to prevent HTML injection
-    function escapeHtml(text) {
-      return text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-    }
-    function toggleDesc(descId, btn) {
-      const descEl = document.getElementById(descId);
-      if (!descEl) return;
-      descEl.classList.toggle("expanded");
-      if (descEl.classList.contains("expanded")) {
-        btn.textContent = "See less";
-      } else {
-        btn.textContent = "See more";
-      }
-    }
-
-    function addOrUpdateJob(e) {
-      e.preventDefault();
-      const title = document.getElementById("title").value.trim();
-      const company = document.getElementById("company").value.trim();
-      const desc = document.getElementById("desc").value.trim();
-      const editId = document.getElementById("editId").value;
-      if (editId) {
-        jobs[editId] = { title, company, desc };
-        document.getElementById("editId").value = "";
-        document.querySelector("#jobForm button").innerText = "Add/Update Job";
-      } else {
-        jobs.push({ title, company, desc });
-      }
-      document.getElementById("title").value = "";
-      document.getElementById("company").value = "";
-      document.getElementById("desc").value = "";
-      renderAdminJobs();
-      renderJobs();
-      document.getElementById("userSearch").value = "";
-      document.getElementById("adminSearch").value = "";
-    }
-    function editJob(idx) {
-      document.getElementById("title").value = jobs[idx].title;
-      document.getElementById("company").value = jobs[idx].company;
-      document.getElementById("desc").value = jobs[idx].desc;
-      document.getElementById("editId").value = idx;
-      document.querySelector("#jobForm button").innerText = "Update Job";
-    }
-    function deleteJob(idx) {
-      jobs.splice(idx, 1);
-      renderAdminJobs();
-      renderJobs();
-    }
-    function showApplyForm(idx) {
-      const job = jobs[idx];
-      const modal = document.getElementById("modalContent");
-      modal.innerHTML = `
-        <h2>Apply to "${job.title}" at ${job.company}</h2>
-        <form id="applyForm" onsubmit="submitApplication(event, ${idx})" enctype="multipart/form-data">
-          <label for="candName">Name</label>
-          <input class="input" type="text" id="candName" required />
-          <label for="candEmail">Email</label>
-          <input class="input" type="email" id="candEmail" required />
-          <label for="candPhone">Phone</label>
-          <input class="input" type="tel" id="candPhone" required/>
-          <label for="candCurrentSalary">Current Salary</label>
-          <input class="input" type="number" min="0" step="any" id="candCurrentSalary" placeholder="Enter your current salary" required/>
-          <label for="candSalaryExpectation">Salary Expectation</label>
-          <input class="input" type="number" min="0" step="any" id="candSalaryExpectation" placeholder="Enter your salary expectation" required/>
-          <label for="candCv">Your CV (paste or upload)</label>
-          <textarea
-            id="candCv"
-            placeholder="Paste CV content or a link"
-            required
-          ></textarea>
-          <label for="candFile">Attach Resume (PDF, DOC, etc)</label>
-          <input type="file" id="candFile" accept=".pdf,.doc,.docx,.txt" required />
-          <button class="btn apply" type="submit">Submit Application</button>
-        </form>
-        <div id="applySuccess"></div>
-      `;
-      showModal();
-    }
-    function showModal() {
-      document.getElementById("modalBg").style.display = "flex";
-    }
-    function hideModal() {
-      document.getElementById("modalBg").style.display = "none";
-    }
-    function closeModal(e) {
-      if (e.target === document.getElementById("modalBg")) {
-        hideModal();
-      }
-    }
-    function submitApplication(e, idx) {
-      e.preventDefault();
-      const name = document.getElementById("candName").value.trim();
-      const email = document.getElementById("candEmail").value.trim();
-      const phone = document.getElementById("candPhone").value.trim();
-      const currSalary = document.getElementById("candCurrentSalary").value.trim();
-      const salaryExp = document.getElementById("candSalaryExpectation").value.trim();
-      const cv = document.getElementById("candCv").value.trim();
-      const fileInput = document.getElementById("candFile");
-      const file = fileInput.files[0];
-      let fileInfo = null;
-      if (file) {
-        fileInfo = {
-          name: file.name,
-          size: file.size,
-          type: file.type,
-        };
-      }
-      applications.push({
-        jobIdx: idx,
-        name,
-        email,
-        phone,
-        currSalary,
-        salaryExp,
-        cv,
-        file: fileInfo,
-        jobTitle: jobs[idx]?.title,
-        jobCompany: jobs[idx]?.company,
-      });
-      document.getElementById("applyForm").reset();
-      document.getElementById("applySuccess").innerHTML = `
-        <div class="success-msg">Thank you, your application has been submitted!</div>
-      `;
-      setTimeout(hideModal, 1800);
-    }
-
-    // Initial render
-    renderJobs();
-    renderAdminJobs();
-  </script>
 </body>
 </html>
